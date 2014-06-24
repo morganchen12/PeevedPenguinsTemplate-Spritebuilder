@@ -10,4 +10,6 @@
 
 @interface MainScene : CCNode
 
+-(void)play;
+
 @end
