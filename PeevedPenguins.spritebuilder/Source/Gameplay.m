@@ -48,6 +48,10 @@
         _currentPenguin.physicsBody.affectedByGravity = FALSE;
         _penguinCatapultJoint = [CCPhysicsJoint connectedPivotJointWithBodyA:_currentPenguin.physicsBody bodyB:_catapultArm.physicsBody anchorA:_currentPenguin.anchorPointInPoints];
     }
+    else {
+        CCActionFollow *refocusOnCatapult = [CCActionFollow actionWithTarget:_pullbackNode worldBoundary:self.boundingBox];
+        [_contentNode runAction:refocusOnCatapult];
+    }
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -68,8 +72,8 @@
     
     _currentPenguin.physicsBody.allowsRotation = TRUE;
     _currentPenguin.physicsBody.affectedByGravity = TRUE;
-    //CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
-    //[_contentNode runAction:follow];
+    CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
+    [_contentNode runAction:follow];
 }
 
 -(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
