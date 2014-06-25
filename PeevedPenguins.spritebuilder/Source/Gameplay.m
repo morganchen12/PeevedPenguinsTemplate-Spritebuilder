@@ -27,7 +27,7 @@
     _pullbackNode.physicsBody.collisionMask = @[];
     _mouseJointNode.physicsBody.collisionMask = @[];
     
-    _physicsNode.debugDraw = TRUE; //debug for phys
+    //_physicsNode.debugDraw = TRUE; //debug for phys
 }
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
