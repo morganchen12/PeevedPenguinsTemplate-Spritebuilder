@@ -14,6 +14,8 @@
     CCNode *_levelNode;
     CCNode *_contentNode;
     CCNode *_pullbackNode;
+    CCNode *_mouseJointNode;
+    CCPhysicsJoint *_mouseJoint;
 }
 
 -(void)didLoadFromCCB {
@@ -21,12 +23,41 @@
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
     [_levelNode addChild:level];
     _pullbackNode.physicsBody.collisionMask = @[];
+    _mouseJointNode.physicsBody.collisionMask = @[];
     
     _physicsNode.debugDraw = TRUE; //debug for phys
 }
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    [self launchPenguin];
+    CGPoint touchLocation = [touch locationInNode:_contentNode];
+    
+    //start catapult drag on touch inside catapult arm
+    if(CGRectContainsPoint([_catapultArm boundingBox], touchLocation)){
+        //move mouseJointNode to touchLocation
+        _mouseJointNode.position = touchLocation;
+        //set up spring joint between mouseJointNode and catapultArm
+        _mouseJoint = [CCPhysicsJoint connectedSpringJointWithBodyA:_mouseJointNode.physicsBody bodyB:_catapultArm.physicsBody anchorA:ccp(0, 0) anchorB:ccp(38, 138) restLength:0.f stiffness:3000.f damping:150.f];
+    }
+}
+
+-(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self releaseCatapult];
+}
+
+-(void)touchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self releaseCatapult];
+}
+
+-(void)releaseCatapult {
+    if(_mouseJoint){
+        [_mouseJoint invalidate];
+        _mouseJoint = nil;
+    }
+}
+
+-(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
+    CGPoint touchLocation = [touch locationInNode:_contentNode];
+    _mouseJointNode.position = touchLocation;
 }
 
 -(void)launchPenguin {
