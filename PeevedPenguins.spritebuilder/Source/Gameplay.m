@@ -63,12 +63,16 @@
 }
 
 -(void)releaseCatapult {
-    if(_mouseJoint != nil){
+    [_penguinCatapultJoint invalidate];
+    _penguinCatapultJoint = nil;
+    
+    if(_mouseJoint){
         [_mouseJoint invalidate];
         _mouseJoint = nil;
     }
-    [_penguinCatapultJoint invalidate];
-    _penguinCatapultJoint = nil;
+    else {
+        return;
+    }
     
     _currentPenguin.physicsBody.allowsRotation = TRUE;
     _currentPenguin.physicsBody.affectedByGravity = TRUE;
