@@ -68,8 +68,8 @@
     
     _currentPenguin.physicsBody.allowsRotation = TRUE;
     _currentPenguin.physicsBody.affectedByGravity = TRUE;
-    CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
-    [_contentNode runAction:follow];
+    //CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
+    //[_contentNode runAction:follow];
 }
 
 -(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
