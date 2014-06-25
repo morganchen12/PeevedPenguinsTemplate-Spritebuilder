@@ -19,6 +19,8 @@
     self.userInteractionEnabled = TRUE; //accept touches on scene
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
     [_levelNode addChild:level];
+    
+    _physicsNode.debugDraw = TRUE; //debug for phys
 }
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
