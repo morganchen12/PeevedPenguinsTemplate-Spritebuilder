@@ -49,7 +49,7 @@
 }
 
 -(void)releaseCatapult {
-    if(_mouseJoint){
+    if(_mouseJoint != nil){
         [_mouseJoint invalidate];
         _mouseJoint = nil;
     }
