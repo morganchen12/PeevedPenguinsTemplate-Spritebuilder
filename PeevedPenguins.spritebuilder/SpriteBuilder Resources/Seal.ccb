@@ -62,7 +62,7 @@
 			<key>collisionType</key>
 			<string></string>
 			<key>cornerRadius</key>
-			<real>14</real>
+			<real>13</real>
 			<key>density</key>
 			<real>1</real>
 			<key>dynamic</key>
