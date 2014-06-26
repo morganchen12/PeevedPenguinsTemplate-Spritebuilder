@@ -26,8 +26,12 @@
     [_levelNode addChild:level];
     _pullbackNode.physicsBody.collisionMask = @[];
     _mouseJointNode.physicsBody.collisionMask = @[];
-    
+    _physicsNode.collisionDelegate = self;
     //_physicsNode.debugDraw = TRUE; //debug for phys
+}
+
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair seal:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
+    CCLOG(@"something collided with a seal");
 }
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -69,15 +73,11 @@
     if(_mouseJoint){
         [_mouseJoint invalidate];
         _mouseJoint = nil;
+        _currentPenguin.physicsBody.allowsRotation = TRUE;
+        _currentPenguin.physicsBody.affectedByGravity = TRUE;
+        CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
+        [_contentNode runAction:follow];
     }
-    else {
-        return;
-    }
-    
-    _currentPenguin.physicsBody.allowsRotation = TRUE;
-    _currentPenguin.physicsBody.affectedByGravity = TRUE;
-    CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
-    [_contentNode runAction:follow];
 }
 
 -(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
