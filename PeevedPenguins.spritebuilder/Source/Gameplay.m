@@ -63,8 +63,8 @@
                                                             anchorA:ccp(0, 0)
                                                             anchorB:ccp(38, 138)
                                                          restLength:0.f
-                                                          stiffness:3000.f
-                                                            damping:150.f];
+                                                          stiffness:9999.f
+                                                            damping:1.f];
         //create penguin
         _currentPenguin = [CCBReader load:@"Penguin"];
         CGPoint penguinPosition = [_catapultArm convertToWorldSpace:ccp(34, 138)];
