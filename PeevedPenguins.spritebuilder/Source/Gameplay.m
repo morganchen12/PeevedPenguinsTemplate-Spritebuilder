@@ -132,7 +132,7 @@ static const float MIN_SPEED = 5.f;
     [[CCDirector sharedDirector] replaceScene:[CCBReader loadAsScene:@"Gameplay"]];
 }
 
--(void) update {
+-(void) update:(CCTime)delta {
     if(_currentPenguin.launched){
         if(ccpLength(_currentPenguin.physicsBody.velocity) < MIN_SPEED){
             [self nextAttempt];
