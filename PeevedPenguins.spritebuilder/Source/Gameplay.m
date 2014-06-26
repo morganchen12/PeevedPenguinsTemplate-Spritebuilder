@@ -72,7 +72,9 @@
         [_physicsNode addChild:_currentPenguin];
         _currentPenguin.physicsBody.allowsRotation = FALSE;
         _currentPenguin.physicsBody.affectedByGravity = FALSE;
-        _penguinCatapultJoint = [CCPhysicsJoint connectedPivotJointWithBodyA:_currentPenguin.physicsBody bodyB:_catapultArm.physicsBody anchorA:_currentPenguin.anchorPointInPoints];
+        _penguinCatapultJoint = [CCPhysicsJoint connectedPivotJointWithBodyA:_currentPenguin.physicsBody
+                                                                       bodyB:_catapultArm.physicsBody
+                                                                     anchorA:_currentPenguin.anchorPointInPoints];
     }
     else {
         CCActionFollow *refocusOnCatapult = [CCActionFollow actionWithTarget:_pullbackNode worldBoundary:self.boundingBox];
