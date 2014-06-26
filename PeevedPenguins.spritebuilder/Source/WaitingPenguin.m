@@ -16,7 +16,7 @@
 }
 
 -(void)startIdleAnimation {
-    CCAnimationManager* animationManager = self.animationManager;
+    CCAnimationManager *animationManager = self.animationManager;
     [animationManager runAnimationsForSequenceNamed:@"IdleAnimation"];
 }
 
