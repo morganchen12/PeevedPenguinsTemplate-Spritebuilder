@@ -31,10 +31,11 @@
     //_physicsNode.debugDraw = TRUE; //debug for phys
 }
 
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair seal:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
-    CGPoint impulse = [pair totalImpulse];
-    float impulseMagnitude = powf(powf(impulse.x, 2.f) + powf(impulse.y, 2.f), 0.5f);
-    if(impulseMagnitude > 1.f){
+- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair seal:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
+    float energy = [pair totalKineticEnergy];
+    
+    // if energy is large enough, remove the seal
+    if (energy > 5000.f) {
         [[_physicsNode space] addPostStepBlock:^{
             [self sealRemoved:nodeA];
         } key:nodeA];
