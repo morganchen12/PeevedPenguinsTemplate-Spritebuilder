@@ -32,8 +32,9 @@
 }
 
 -(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair seal:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
-    float energy = [pair totalKineticEnergy];
-    if(energy > 1.f){
+    CGPoint impulse = [pair totalImpulse];
+    float impulseMagnitude = powf(powf(impulse.x, 2.f) + powf(impulse.y, 2.f), 0.5f);
+    if(impulseMagnitude > 1.f){
         [[_physicsNode space] addPostStepBlock:^{
             [self sealRemoved:nodeA];
         } key:nodeA];
