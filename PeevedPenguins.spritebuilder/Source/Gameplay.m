@@ -31,7 +31,20 @@
 }
 
 -(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair seal:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
-    CCLOG(@"something collided with a seal");
+    float energy = [pair totalKineticEnergy];
+    if(energy > 5000.f){
+        [[_physicsNode space] addPostStepBlock:^{
+            [self sealRemoved:nodeA];
+        } key:nodeA];
+    }
+}
+
+-(void)sealRemoved:(CCNode *) seal {
+    CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"SealExplosion"];
+    explosion.autoRemoveOnFinish = TRUE;
+    explosion.position = seal.position;
+    [seal.parent addChild:explosion];
+    [seal removeFromParent];
 }
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
