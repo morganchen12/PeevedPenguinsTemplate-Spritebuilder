@@ -8,6 +8,9 @@
 
 #import "Gameplay.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
+#import "Penguin.h"
+
+static const float MIN_SPEED = 5.f;
 
 @implementation Gameplay {
     CCPhysicsNode *_physicsNode;
@@ -17,8 +20,9 @@
     CCNode *_pullbackNode;
     CCNode *_mouseJointNode;
     CCPhysicsJoint *_mouseJoint;
-    CCNode *_currentPenguin;
+    Penguin *_currentPenguin;
     CCPhysicsJoint *_penguinCatapultJoint;
+    CCAction *_followPenguin;
 }
 
 -(void)didLoadFromCCB {
@@ -66,7 +70,7 @@
                                                           stiffness:9999.f
                                                             damping:1.f];
         //create penguin
-        _currentPenguin = [CCBReader load:@"Penguin"];
+        _currentPenguin = (Penguin *)[CCBReader load:@"Penguin"];
         CGPoint penguinPosition = [_catapultArm convertToWorldSpace:ccp(34, 138)];
         _currentPenguin.position = [_physicsNode convertToNodeSpace:penguinPosition];
         [_physicsNode addChild:_currentPenguin];
@@ -76,10 +80,10 @@
                                                                        bodyB:_catapultArm.physicsBody
                                                                      anchorA:_currentPenguin.anchorPointInPoints];
     }
-    else {
-        CCActionFollow *refocusOnCatapult = [CCActionFollow actionWithTarget:_pullbackNode worldBoundary:self.boundingBox];
-        [_contentNode runAction:refocusOnCatapult];
-    }
+//    else {
+//        CCActionFollow *refocusOnCatapult = [CCActionFollow actionWithTarget:_pullbackNode worldBoundary:self.boundingBox];
+//        [_contentNode runAction:refocusOnCatapult];
+//    }
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -99,9 +103,10 @@
         _mouseJoint = nil;
         _currentPenguin.physicsBody.allowsRotation = TRUE;
         _currentPenguin.physicsBody.affectedByGravity = TRUE;
-        CCActionFollow *follow = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
-        [_contentNode runAction:follow];
+        _followPenguin = [CCActionFollow actionWithTarget:_currentPenguin worldBoundary:self.boundingBox];
+        [_contentNode runAction:_followPenguin];
     }
+    _currentPenguin.launched = TRUE;
 }
 
 -(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -125,6 +130,34 @@
 
 -(void)retry {
     [[CCDirector sharedDirector] replaceScene:[CCBReader loadAsScene:@"Gameplay"]];
+}
+
+-(void) update {
+    if(_currentPenguin.launched){
+        if(ccpLength(_currentPenguin.physicsBody.velocity) < MIN_SPEED){
+            [self nextAttempt];
+            return;
+        }
+        
+        int xMin = _currentPenguin.boundingBox.origin.x;
+        if(xMin < self.boundingBox.origin.x){
+            [self nextAttempt];
+            return;
+        }
+        
+        int xMax = xMin + _currentPenguin.boundingBox.size.width;
+        if(xMax > self.boundingBox.size.width + self.boundingBox.origin.x){
+            [self nextAttempt];
+            return;
+        }
+    }
+}
+
+-(void)nextAttempt{
+    _currentPenguin = nil;
+    [_contentNode stopAction:_followPenguin];
+    CCActionMoveTo *actionMoveTo = [CCActionMoveTo actionWithDuration:1.f position:ccp(0, 0)];
+    [_contentNode runAction:actionMoveTo];
 }
 
 @end
