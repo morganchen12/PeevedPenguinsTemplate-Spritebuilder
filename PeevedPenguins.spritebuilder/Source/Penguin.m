@@ -10,6 +10,8 @@
 
 @implementation Penguin
 
-
+-(void)didLoadFromCCB {
+    self.launched = FALSE;
+}
 
 @end
