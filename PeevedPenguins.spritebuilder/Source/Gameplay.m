@@ -28,7 +28,7 @@
     _pullbackNode.physicsBody.collisionMask = @[];
     _mouseJointNode.physicsBody.collisionMask = @[];
     _physicsNode.collisionDelegate = self;
-    //_physicsNode.debugDraw = TRUE; //debug for phys
+    _physicsNode.debugDraw = TRUE; //debug for phys
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair seal:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
