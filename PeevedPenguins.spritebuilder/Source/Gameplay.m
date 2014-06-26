@@ -25,7 +25,7 @@
     self.userInteractionEnabled = TRUE; //accept touches on scene
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
     [_levelNode addChild:level];
-    //_pullbackNode.physicsBody.collisionMask = @[];
+    _pullbackNode.physicsBody.collisionMask = @[];
     _mouseJointNode.physicsBody.collisionMask = @[];
     _physicsNode.collisionDelegate = self;
     //_physicsNode.debugDraw = TRUE; //debug for phys
@@ -58,7 +58,13 @@
         //move mouseJointNode to touchLocation
         _mouseJointNode.position = touchLocation;
         //set up spring joint between mouseJointNode and catapultArm
-        _mouseJoint = [CCPhysicsJoint connectedSpringJointWithBodyA:_mouseJointNode.physicsBody bodyB:_catapultArm.physicsBody anchorA:ccp(0, 0) anchorB:ccp(38, 138) restLength:0.f stiffness:3000.f damping:150.f];
+        _mouseJoint = [CCPhysicsJoint connectedSpringJointWithBodyA:_mouseJointNode.physicsBody
+                                                              bodyB:_catapultArm.physicsBody
+                                                            anchorA:ccp(0, 0)
+                                                            anchorB:ccp(38, 138)
+                                                         restLength:0.f
+                                                          stiffness:3000.f
+                                                            damping:150.f];
         //create penguin
         _currentPenguin = [CCBReader load:@"Penguin"];
         CGPoint penguinPosition = [_catapultArm convertToWorldSpace:ccp(34, 138)];
@@ -68,10 +74,10 @@
         _currentPenguin.physicsBody.affectedByGravity = FALSE;
         _penguinCatapultJoint = [CCPhysicsJoint connectedPivotJointWithBodyA:_currentPenguin.physicsBody bodyB:_catapultArm.physicsBody anchorA:_currentPenguin.anchorPointInPoints];
     }
-    else {
-        CCActionFollow *refocusOnCatapult = [CCActionFollow actionWithTarget:_pullbackNode worldBoundary:self.boundingBox];
-        [_contentNode runAction:refocusOnCatapult];
-    }
+    //else {
+    //    CCActionFollow *refocusOnCatapult = [CCActionFollow actionWithTarget:_pullbackNode worldBoundary:self.boundingBox];
+    //    [_contentNode runAction:refocusOnCatapult];
+    //}
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
